@@ -46,4 +46,18 @@ async function sendRegisteremail(userEmail,name){
    await sendEmail(userEmail,subject,text,html)
 }
 
-module.exports = {sendRegisteremail};
+async function sendTransactionEmail(userEmail,name,amount,fromAccount,toAccount){
+  const subject='Transaction Notification from TransactX'
+  const text=`Hello ${name}, \n\nWe would like to inform you that a transaction has been successfully processed on your account. Here are the details:\n\nAmount: ${amount}\nFrom Account: ${fromAccount}\nTo Account: ${toAccount}\n\nIf you have any questions or concerns regarding this transaction, please contact our support team.\n\nThank you for using TransactX.\n\nBest regards,\nThe TransactX Team`
+  const html=`<p>Hello ${name},</p><p>We would like to inform you that a transaction has been successfully processed on your account. Here are the details:</p><ul><li>Amount: ${amount}</li><li>From Account: ${fromAccount}</li><li>To Account: ${toAccount}</li></ul><p>If you have any questions or concerns regarding this transaction, please contact our support team.</p><p>Thank you for using TransactX.</p><p>Best regards,<br>The TransactX Team</p>`
+  await sendEmail(userEmail,subject,text,html)
+}
+
+async function sendTransactionFailureEmail(userEmail,name,amount,fromAccount,toAccount){
+  const subject='Transaction Failure Notification from TransactX'
+  const text=`Hello ${name}, \n\nWe regret to inform you that a transaction attempt on your account has failed. Here are the details:\n\nAmount: ${amount}\nFrom Account: ${fromAccount}\nTo Account: ${toAccount}\n\nPlease review the transaction details and ensure that all information is correct. If you continue to experience issues, please contact our support team for assistance.\n\nThank you for using TransactX.\n\nBest regards,\nThe TransactX Team`
+  const html=`<p>Hello ${name},</p><p>We regret to inform you that a transaction attempt on your account has failed. Here are the details:</p><ul><li>Amount: ${amount}</li><li>From Account: ${fromAccount}</li><li>To Account: ${toAccount}</li></ul><p>Please review the transaction details and ensure that all information is correct. If you continue to experience issues, please contact our support team for assistance.</p><p>Thank you for using TransactX.</p><p>Best regards,<br>The TransactX Team</p>`
+  await sendEmail(userEmail,subject,text,html)
+}
+
+module.exports = {sendRegisteremail, sendTransactionEmail, sendTransactionFailureEmail};
