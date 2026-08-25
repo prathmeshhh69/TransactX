@@ -93,6 +93,11 @@ async function createTransaction(req,res){
 
 }
 
+async function createInitialFundsTransaction(req,res){
+    const {toAccount,amount,idempotencyKey}=req.body;
+    
+}
+
 module.exports={createTransaction};
 
 
