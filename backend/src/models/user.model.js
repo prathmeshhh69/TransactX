@@ -26,7 +26,6 @@ email: {
     systemUser:{
         type:Boolean,
         default:false,
-        immutable:true,
         select:false
     }
 },{timestamps:true})
