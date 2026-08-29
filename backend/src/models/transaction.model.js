@@ -23,6 +23,13 @@ const transactionSchema=new mongoose.Schema({
         required:[true,"Idempotency key is required for transaction"],
         unique:true,
         index:true
+    },
+    status:{
+        type:String,
+        enum:["PENDING","COMPLETED","FAILED"],
+        default:"PENDING",
+        required:true,
+        index:true
     }
 },{timestamps:true})
 

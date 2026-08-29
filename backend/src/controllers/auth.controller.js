@@ -2,10 +2,11 @@ const userModel = require('../models/user.model');
 const emailService = require('../services/email.service');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const blacklistModel=require('../models/blacklist.model')
 
 async function registerUser(req, res) {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password,systemUser } = req.body;
 
     const isUserExists = await userModel.findOne({
       $or: [{ email }, { name }]
@@ -20,7 +21,8 @@ async function registerUser(req, res) {
     const user = await userModel.create({
       name,
       email,
-      password
+      password,
+      systemUser
     });
 
     const token = jwt.sign(
@@ -87,4 +89,14 @@ async function loginUser(req, res) {
   }
 }
 
-module.exports = { registerUser, loginUser };
+async function logoutUser(req,res){
+    const token=req.cookies.token || req.headers.authorization?.split(" ")[1];
+    if(!token){
+        return res.status(401).json({error:"User is not logged in"})
+    }
+    await blacklistModel.create({token});
+    res.clearCookie("token");
+    return res.status(200).json({message:"User logged out successfully"});
+}
+
+module.exports = { registerUser, loginUser ,logoutUser};
